@@ -5,13 +5,15 @@ interface AuthConfig {
   silentCallbackURL: string;
   audience: string;
   apiUrl: string;
+  scopes: string;
 }
 
 export const AUTH_CONFIG: AuthConfig = {
-  clientID: '{CLIENT_ID}',
-  domain: '{DOMAIN}',
+  clientID: 'JOZMTpK0AliY88vOBWKSqkKooJm6ssAD',
+  domain: 'jimmy-moda.auth0.com',
   callbackURL: 'http://localhost:4200/callback',
   silentCallbackURL: 'http://localhost:3001/silent',
-  audience: '{API_IDENTIFIER}',
-  apiUrl: 'http://localhost:8080'
+  audience: 'https://sample.timesheets.com',
+  apiUrl: 'http://localhost:8080',
+  scopes: 'openid profile read:timesheets create:timesheets delete:timesheets approve:timesheets'
 };

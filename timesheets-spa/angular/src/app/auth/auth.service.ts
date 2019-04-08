@@ -10,7 +10,6 @@ export class AuthService {
 
   userProfile: any;
   refreshSubscription: any;
-  requestedScopes: string = 'openid profile read:timesheets create:timesheets';
 
   auth0 = new auth0.WebAuth({
     clientID: AUTH_CONFIG.clientID,
@@ -18,7 +17,7 @@ export class AuthService {
     responseType: 'token id_token',
     audience: AUTH_CONFIG.audience,
     redirectUri: AUTH_CONFIG.callbackURL,
-    scope: this.requestedScopes,
+    scope: AUTH_CONFIG.scopes,
     leeway: 30
   });
 
@@ -65,7 +64,7 @@ export class AuthService {
     // use it to set scopes in the session for the user. Otherwise
     // use the scopes as requested. If no scopes were requested,
     // set it to nothing
-    const scopes = authResult.scope || this.requestedScopes || '';
+    const scopes = authResult.scope || AUTH_CONFIG.scopes || '';
 
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
@@ -81,6 +80,10 @@ export class AuthService {
     localStorage.removeItem('expires_at');
     localStorage.removeItem('scopes');
     this.unscheduleRenewal();
+    this.auth0.logout({
+      returnTo: 'http://localhost:4200/',
+      clientID: AUTH_CONFIG.clientID
+    });
     // Go back to the home route
     this.router.navigate(['/']);
   }
